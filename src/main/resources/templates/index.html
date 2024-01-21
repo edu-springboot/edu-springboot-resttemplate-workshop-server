@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="application/javascript">
+        let ws;
+
+        function connect() {
+            ws = new WebSocket("ws://localhost:8080/ws/account");
+            ws.onmessage = function (e) {
+                printMessage(e.data);
+            }
+            document.getElementById("connectButton").disabled = true;
+            document.getElementById("connectButton").value = "Connected";
+        }
+
+        function printMessage(data) {
+            let messages = document.getElementById("messages");
+            let messageData = JSON.parse(data);
+            let newMessage = document.createElement("div");
+            newMessage.innerHTML = "  * " + messageData.id + " : " + messageData.user +" : " + messageData.number + " : " + messageData.balance;
+            messages.appendChild(newMessage);
+        }
+
+    </script>
+    <style>
+        div {
+            font-size: xx-large;
+        }
+    </style>
+</head>
+<body>
+<h1>ACCOUNT DASHBOARD</h1>
+<input id="connectButton" type="button" value="Connect" onclick="connect()">
+<div id="messages">ACCOUNTS</div>
+</body>
+</html>
